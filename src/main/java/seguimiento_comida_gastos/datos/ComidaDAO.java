@@ -1,0 +1,72 @@
+package seguimiento_comida_gastos.datos;
+
+import seguimiento_comida_gastos.conexion.Conexion;
+import seguimiento_comida_gastos.dominio.Comida;
+
+import java.sql.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+public class ComidaDAO implements IComidaDAO{
+    @Override
+    public List<Comida> listarComidasDelDia() {
+        Connection con = Conexion.getConexion();
+        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+        String consultaSQL = "SELECT * FROM comida WHERE (fecha = ?);";
+        List<Comida> comidasDelDia = new ArrayList<>();
+        ResultSet rs;
+        PreparedStatement ps;
+        try{
+            ps = con.prepareStatement(consultaSQL);
+            ps.setString(1, formato.format(new Date()));
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Comida comida = new Comida();
+                comida.setId(rs.getInt("id"));
+                comida.setNombre(rs.getString("nombre"));
+                comida.setPrecio(rs.getInt("precio"));
+                comida.setFechaDeConsumo(rs.getDate("fecha"));
+
+                comidasDelDia.add(comida);
+            }
+            return comidasDelDia;
+        }catch (Exception e){
+            System.out.println("Error al listar las comidas del dia: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (Exception ex) {
+                System.out.println("Error al cerrar la base de datos: " + ex.getMessage());
+            }
+        }
+        return comidasDelDia;
+    }
+
+    @Override
+    public List<Comida> listarComidasPorFechaPersonalizada(Date fechaInicial, Date fechaFinal) {
+        return List.of();
+    }
+
+    @Override
+    public boolean crearComida(Comida unaComida) {
+        return false;
+    }
+
+    @Override
+    public boolean modificarComida(Comida unaComida) {
+        return false;
+    }
+
+    @Override
+    public boolean eliminarComida(Comida unaComida) {
+        return false;
+    }
+
+    @Override
+    public int mostrarGastosMensuales() {
+        return 0;
+    }
+
+}
