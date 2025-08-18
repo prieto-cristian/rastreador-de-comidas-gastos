@@ -10,10 +10,11 @@ public class Conexion {
         var usuario = "root";
         var contrasenia = "password";
 
-        try(Connection conexion = DriverManager.getConnection(url, usuario, contrasenia);){
+        try{
+            Connection conexion = DriverManager.getConnection(url, usuario, contrasenia);
             return conexion;
         }catch (Exception e){
-            System.out.println("Error al conectarnos a la DB: " + e.getMessage());
+            System.out.println("No se pudo conectar a la base de datos: " + e.getMessage());
         }
         return null;
     }
