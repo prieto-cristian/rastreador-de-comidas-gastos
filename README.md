@@ -24,3 +24,7 @@ Este proyecto permite llevar un registro de las comidas y los gastos realizados.
 - Eliminar comidas.
 
 - Ver el total gastado en el mes
+
+## :hammer: Instalar la base de datos
+
+En la carpeta SCRIPT_DB se encuentra el codigo sql necesario para crear la base de datos y la tabla. Este codigo lo tienes que ejecutar en MySQL Workbench.
