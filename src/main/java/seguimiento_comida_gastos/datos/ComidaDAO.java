@@ -134,6 +134,23 @@ public class ComidaDAO implements IComidaDAO{
 
     @Override
     public boolean eliminarComida(Comida unaComida) {
+        String consultaSQL = "DELETE FROM comida WHERE id = ?";
+        Connection con = Conexion.getConexion();
+        PreparedStatement ps;
+        try{
+            ps = con.prepareStatement(consultaSQL);
+            ps.setInt(1, unaComida.getId());
+            int resultado = ps.executeUpdate();
+            return resultado != 0;
+        } catch (Exception e) {
+            System.out.println("Error al eliminar la comida: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                System.out.println("Error al cerrar la base de datos: " + e.getMessage());
+            }
+        }
         return false;
     }
 
