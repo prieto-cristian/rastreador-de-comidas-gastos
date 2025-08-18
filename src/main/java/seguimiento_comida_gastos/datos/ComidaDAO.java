@@ -156,7 +156,29 @@ public class ComidaDAO implements IComidaDAO{
 
     @Override
     public int mostrarGastosMensuales() {
-        return 0;
+        // Busca desde la fecha actual hasta el dia 01 del mes
+        String consultaSQL = "SELECT SUM(precio) AS total FROM comida " +
+                "WHERE fecha BETWEEN DATE_FORMAT(CURDATE(), '%Y-%m-01') AND CURDATE();";
+        PreparedStatement ps;
+        Connection con = Conexion.getConexion();
+        ResultSet rs;
+        try{
+            ps = con.prepareStatement(consultaSQL);
+            rs = ps.executeQuery();
+            if(rs.next()){
+                int montoTotal = rs.getInt("total");
+                return montoTotal;
+            }
+        } catch (Exception e) {
+            System.out.println("Error al obtener el total gastado: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                System.out.println("Error al cerrar la base de datos: " + e.getMessage());
+            }
+        }
+        return -1;
     }
-    
+
 }
