@@ -107,6 +107,28 @@ public class ComidaDAO implements IComidaDAO{
 
     @Override
     public boolean modificarComida(Comida unaComida) {
+        String consultaSQL = "UPDATE comida SET nombre = ?, fecha = ?, precio = ? WHERE (id = ?)";
+        Connection con = Conexion.getConexion();
+        PreparedStatement ps;
+        ResultSet rs;
+        try{
+            ps = con.prepareStatement(consultaSQL);
+            ps.setString(1, unaComida.getNombre());
+            ps.setString(2, unaComida.getFechaDeConsumo().toString());
+            ps.setInt(3, unaComida.getPrecio());
+            ps.setInt(4, unaComida.getId());
+
+            var resultado = ps.executeUpdate();
+            return resultado != 0;
+        } catch (Exception e) {
+            System.out.println("Error al actualizar una comida: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (SQLException e) {
+                System.out.println("Error al cerrar la conexion: " + e.getMessage());
+            }
+        }
         return false;
     }
 
