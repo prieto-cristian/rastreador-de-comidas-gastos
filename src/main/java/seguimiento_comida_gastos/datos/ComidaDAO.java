@@ -5,6 +5,9 @@ import seguimiento_comida_gastos.dominio.Comida;
 
 import java.sql.*;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -27,7 +30,7 @@ public class ComidaDAO implements IComidaDAO{
                 comida.setId(rs.getInt("id"));
                 comida.setNombre(rs.getString("nombre"));
                 comida.setPrecio(rs.getInt("precio"));
-                comida.setFechaDeConsumo(rs.getDate("fecha"));
+                comida.setFechaDeConsumo(LocalDate.ofInstant(rs.getDate("fecha").toInstant(), ZoneId.systemDefault()));
 
                 comidasDelDia.add(comida);
             }
@@ -45,7 +48,7 @@ public class ComidaDAO implements IComidaDAO{
     }
 
     @Override
-    public List<Comida> listarComidasPorFechaPersonalizada(Date fechaInicial, Date fechaFinal) {
+    public List<Comida> listarComidasPorFechaPersonalizada(LocalDate fechaInicial, LocalDate fechaFinal) {
         return List.of();
     }
 

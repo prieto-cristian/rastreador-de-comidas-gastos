@@ -1,14 +1,14 @@
 package seguimiento_comida_gastos.dominio;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.Objects;
 
 public class Comida {
     private int id;
     private int precio;
     private String nombre;
-    private Date fechaDeConsumo;
-    
+    private LocalDate fechaDeConsumo;
+
     public Comida(){}
 
     // Se utilizara para eliminar una comidaw
@@ -17,14 +17,14 @@ public class Comida {
     }
 
     // Se utilizara para crear una comida. El ID no se pasa porque lo maneja la base de datos
-    public Comida(int precio, String nombre, Date fechaDeConsumo){
+    public Comida(int precio, String nombre, LocalDate fechaDeConsumo){
         this.precio = precio;
         this.fechaDeConsumo = fechaDeConsumo;
         this.nombre = nombre;
     }
 
     // Este constructor se va a usar para modificar. El usuario debe pasarnos el ID
-    public Comida (int id, int precio, String nombre, Date fechaDeConsumo){
+    public Comida (int id, int precio, String nombre, LocalDate fechaDeConsumo){
         this(precio, nombre, fechaDeConsumo);
         this.id = id;
     }
@@ -75,11 +75,11 @@ public class Comida {
         this.nombre = nombre;
     }
 
-    public Date getFechaDeConsumo() {
+    public LocalDate getFechaDeConsumo() {
         return fechaDeConsumo;
     }
 
-    public void setFechaDeConsumo(Date fechaDeConsumo) {
+    public void setFechaDeConsumo(LocalDate fechaDeConsumo) {
         this.fechaDeConsumo = fechaDeConsumo;
     }
 }
