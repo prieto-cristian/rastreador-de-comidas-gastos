@@ -82,6 +82,26 @@ public class ComidaDAO implements IComidaDAO{
 
     @Override
     public boolean crearComida(Comida unaComida) {
+        String consultaSQL = "INSERT INTO comida (nombre, fecha, precio) VALUES (?, ?, ?);";
+        Connection con = Conexion.getConexion();
+        PreparedStatement ps;
+        try{
+            ps = con.prepareStatement(consultaSQL);
+            ps.setString(1, unaComida.getNombre());
+            ps.setString(2, unaComida.getFechaDeConsumo().toString());
+            ps.setInt(3, unaComida.getPrecio());
+
+            var resultado = ps.executeUpdate();
+            return resultado != 0;
+        }catch (Exception e){
+            System.out.println("No se pudo crear la comida: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                System.out.println("Error al cerrar la base de datos: " + e.getMessage());
+            }
+        }
         return false;
     }
 
