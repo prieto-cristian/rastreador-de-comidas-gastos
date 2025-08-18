@@ -49,7 +49,35 @@ public class ComidaDAO implements IComidaDAO{
 
     @Override
     public List<Comida> listarComidasPorFechaPersonalizada(LocalDate fechaInicial, LocalDate fechaFinal) {
-        return List.of();
+        String consultaSQL = "SELECT * FROM comida WHERE (fecha BETWEEN ? AND ?);";
+        Connection con = Conexion.getConexion();
+        PreparedStatement ps;
+        ResultSet rs;
+        List<Comida> listaComidas = new ArrayList<>();
+        try{
+            ps = con.prepareStatement(consultaSQL);
+            ps.setString(1, fechaInicial.toString());
+            ps.setString(2, fechaFinal.toString());
+            rs = ps.executeQuery();
+            while(rs.next()){
+                Comida unaComida = new Comida();
+                unaComida.setId(rs.getInt("id"));
+                unaComida.setNombre(rs.getString("nombre"));
+                unaComida.setFechaDeConsumo(Instant.ofEpochMilli(rs.getDate("fecha").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+                unaComida.setPrecio(rs.getInt("precio"));
+
+                listaComidas.add(unaComida);
+            }
+        }catch (Exception e){
+            System.out.println("Error al listar comidas por fechas personalizadas: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                System.out.println("Error al cerrar la base de datos: " + e.getMessage());
+            }
+        }
+        return listaComidas;
     }
 
     @Override
@@ -71,5 +99,5 @@ public class ComidaDAO implements IComidaDAO{
     public int mostrarGastosMensuales() {
         return 0;
     }
-
+    
 }
