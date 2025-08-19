@@ -16,21 +16,20 @@ public class ComidaDAO implements IComidaDAO{
     @Override
     public List<Comida> listarComidasDelDia() {
         Connection con = Conexion.getConexion();
-        SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
         String consultaSQL = "SELECT * FROM comida WHERE (fecha = ?);";
         List<Comida> comidasDelDia = new ArrayList<>();
         ResultSet rs;
         PreparedStatement ps;
         try{
             ps = con.prepareStatement(consultaSQL);
-            ps.setString(1, formato.format(new Date()));
+            ps.setString(1, LocalDate.now().toString());
             rs = ps.executeQuery();
             while(rs.next()){
                 Comida comida = new Comida();
                 comida.setId(rs.getInt("id"));
                 comida.setNombre(rs.getString("nombre"));
                 comida.setPrecio(rs.getInt("precio"));
-                comida.setFechaDeConsumo(LocalDate.ofInstant(rs.getDate("fecha").toInstant(), ZoneId.systemDefault()));
+                comida.setFechaDeConsumo(Instant.ofEpochMilli(rs.getDate("fecha").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
 
                 comidasDelDia.add(comida);
             }
