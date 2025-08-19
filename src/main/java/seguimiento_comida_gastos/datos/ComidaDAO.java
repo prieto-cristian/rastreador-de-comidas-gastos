@@ -181,4 +181,32 @@ public class ComidaDAO implements IComidaDAO{
         return -1;
     }
 
+    @Override
+    public Comida buscarComidaPorId(Comida unaComida) {
+        String consultaSQL = "SELECT * FROM comida WHERE (id = ?);";
+        Connection con = Conexion.getConexion();
+        ResultSet rs;
+        PreparedStatement ps;
+        try{
+            ps = con.prepareStatement(consultaSQL);
+            ps.setInt(1, unaComida.getId());
+            rs = ps.executeQuery();
+            if(rs.next()){
+                unaComida.setNombre(rs.getString("nombre"));
+                unaComida.setPrecio(rs.getInt("precio"));
+                unaComida.setFechaDeConsumo(Instant.ofEpochMilli(rs.getDate("fecha").getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+            }
+            return unaComida;
+        } catch (SQLException e) {
+            System.out.println("Error al buscar la comida por ID: " + e.getMessage());
+        }finally {
+            try {
+                con.close();
+            } catch (Exception e) {
+                System.out.println("Error al cerrar la base de datos: " + e.getMessage());
+            }
+        }
+        return null;
+    }
+
 }

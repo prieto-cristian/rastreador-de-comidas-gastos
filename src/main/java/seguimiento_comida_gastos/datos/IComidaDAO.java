@@ -14,4 +14,6 @@ public interface IComidaDAO {
     public boolean eliminarComida(Comida unaComida);
 
     public int mostrarGastosMensuales();
+    // Recibe el ID
+    public Comida buscarComidaPorId(Comida unaComida);
 }
